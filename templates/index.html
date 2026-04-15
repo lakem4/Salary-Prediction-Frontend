@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}Salary Predictor{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-9 col-xl-8">
+        <div class="card shadow border-0 rounded-4">
+            <div class="card-body p-4 p-md-5">
+                <h1 class="text-center mb-3">Salary Prediction Form</h1>
+                <p class="text-muted text-center mb-4">
+                    Choose values for each category to predict a salary.
+                </p>
+
+                {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                {% if predicted_salary is not none %}
+                <div class="alert alert-success" role="alert">
+                    <h4 class="alert-heading">Predicted Salary</h4>
+                    <p class="mb-0 fs-5 fw-semibold">${{ "{:,.2f}".format(predicted_salary|float) }}</p>
+                </div>
+                {% endif %}
+
+                <form action="/predict" method="POST">
+
+                    <div class="mb-3">
+                        <label for="age" class="form-label">Age</label>
+                        <select class="form-select" id="age" name="age" required>
+                            <option value="" disabled {% if not form_data.get('age') %}selected{% endif %}>Choose a value</option>
+                            <option value="0" {% if form_data.get('age') == '0' %}selected{% endif %}>18-21</option>
+                            <option value="1" {% if form_data.get('age') == '1' %}selected{% endif %}>22-24</option>
+                            <option value="2" {% if form_data.get('age') == '2' %}selected{% endif %}>25-29</option>
+                            <option value="3" {% if form_data.get('age') == '3' %}selected{% endif %}>30-34</option>
+                            <option value="4" {% if form_data.get('age') == '4' %}selected{% endif %}>35-39</option>
+                            <option value="5" {% if form_data.get('age') == '5' %}selected{% endif %}>40-44</option>
+                            <option value="6" {% if form_data.get('age') == '6' %}selected{% endif %}>45-49</option>
+                            <option value="7" {% if form_data.get('age') == '7' %}selected{% endif %}>50-54</option>
+                            <option value="8" {% if form_data.get('age') == '8' %}selected{% endif %}>55-59</option>
+                            <option value="9" {% if form_data.get('age') == '9' %}selected{% endif %}>60-69</option>
+                            <option value="10" {% if form_data.get('age') == '10' %}selected{% endif %}>70+</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-select" id="gender" name="gender" required>
+                            <option value="" disabled {% if not form_data.get('gender') %}selected{% endif %}>Choose a value</option>
+                            <option value="0" {% if form_data.get('gender') == '0' %}selected{% endif %}>Man</option>
+                            <option value="1" {% if form_data.get('gender') == '1' %}selected{% endif %}>Nonbinary</option>
+                            <option value="2" {% if form_data.get('gender') == '2' %}selected{% endif %}>Prefer not to say</option>
+                            <option value="3" {% if form_data.get('gender') == '3' %}selected{% endif %}>Prefer to self-describe</option>
+                            <option value="4" {% if form_data.get('gender') == '4' %}selected{% endif %}>Woman</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="country" class="form-label">Country</label>
+                        <select class="form-select" id="country" name="country" required>
+                            <option value="" disabled {% if not form_data.get('country') %}selected{% endif %}>Choose a value</option>
+                            <option value="0" {% if form_data.get('country') == '0' %}selected{% endif %}>Algeria</option>
+                            <option value="1" {% if form_data.get('country') == '1' %}selected{% endif %}>Argentina</option>
+                            <option value="2" {% if form_data.get('country') == '2' %}selected{% endif %}>Australia</option>
+                            <option value="3" {% if form_data.get('country') == '3' %}selected{% endif %}>Bangladesh</option>
+                            <option value="4" {% if form_data.get('country') == '4' %}selected{% endif %}>Belgium</option>
+                            <option value="5" {% if form_data.get('country') == '5' %}selected{% endif %}>Brazil</option>
+                            <option value="6" {% if form_data.get('country') == '6' %}selected{% endif %}>Cameroon</option>
+                            <option value="7" {% if form_data.get('country') == '7' %}selected{% endif %}>Canada</option>
+                            <option value="8" {% if form_data.get('country') == '8' %}selected{% endif %}>Chile</option>
+                            <option value="9" {% if form_data.get('country') == '9' %}selected{% endif %}>China</option>
+                            <option value="10" {% if form_data.get('country') == '10' %}selected{% endif %}>Colombia</option>
+                            <option value="11" {% if form_data.get('country') == '11' %}selected{% endif %}>Czech Republic</option>
+                            <option value="12" {% if form_data.get('country') == '12' %}selected{% endif %}>Ecuador</option>
+                            <option value="13" {% if form_data.get('country') == '13' %}selected{% endif %}>Egypt</option>
+                            <option value="14" {% if form_data.get('country') == '14' %}selected{% endif %}>Ethiopia</option>
+                            <option value="15" {% if form_data.get('country') == '15' %}selected{% endif %}>France</option>
+                            <option value="16" {% if form_data.get('country') == '16' %}selected{% endif %}>Germany</option>
+                            <option value="17" {% if form_data.get('country') == '17' %}selected{% endif %}>Ghana</option>
+                            <option value="18" {% if form_data.get('country') == '18' %}selected{% endif %}>Hong Kong (S.A.R.)</option>
+                            <option value="19" {% if form_data.get('country') == '19' %}selected{% endif %}>I do not wish to disclose my location</option>
+                            <option value="20" {% if form_data.get('country') == '20' %}selected{% endif %}>India</option>
+                            <option value="21" {% if form_data.get('country') == '21' %}selected{% endif %}>Indonesia</option>
+                            <option value="22" {% if form_data.get('country') == '22' %}selected{% endif %}>Iran, Islamic Republic of...</option>
+                            <option value="23" {% if form_data.get('country') == '23' %}selected{% endif %}>Ireland</option>
+                            <option value="24" {% if form_data.get('country') == '24' %}selected{% endif %}>Israel</option>
+                            <option value="25" {% if form_data.get('country') == '25' %}selected{% endif %}>Italy</option>
+                            <option value="26" {% if form_data.get('country') == '26' %}selected{% endif %}>Japan</option>
+                            <option value="27" {% if form_data.get('country') == '27' %}selected{% endif %}>Kenya</option>
+                            <option value="28" {% if form_data.get('country') == '28' %}selected{% endif %}>Malaysia</option>
+                            <option value="29" {% if form_data.get('country') == '29' %}selected{% endif %}>Mexico</option>
+                            <option value="30" {% if form_data.get('country') == '30' %}selected{% endif %}>Morocco</option>
+                            <option value="31" {% if form_data.get('country') == '31' %}selected{% endif %}>Nepal</option>
+                            <option value="32" {% if form_data.get('country') == '32' %}selected{% endif %}>Netherlands</option>
+                            <option value="33" {% if form_data.get('country') == '33' %}selected{% endif %}>Nigeria</option>
+                            <option value="34" {% if form_data.get('country') == '34' %}selected{% endif %}>Other</option>
+                            <option value="35" {% if form_data.get('country') == '35' %}selected{% endif %}>Pakistan</option>
+                            <option value="36" {% if form_data.get('country') == '36' %}selected{% endif %}>Peru</option>
+                            <option value="37" {% if form_data.get('country') == '37' %}selected{% endif %}>Philippines</option>
+                            <option value="38" {% if form_data.get('country') == '38' %}selected{% endif %}>Poland</option>
+                            <option value="39" {% if form_data.get('country') == '39' %}selected{% endif %}>Portugal</option>
+                            <option value="40" {% if form_data.get('country') == '40' %}selected{% endif %}>Romania</option>
+                            <option value="41" {% if form_data.get('country') == '41' %}selected{% endif %}>Russia</option>
+                            <option value="42" {% if form_data.get('country') == '42' %}selected{% endif %}>Saudi Arabia</option>
+                            <option value="43" {% if form_data.get('country') == '43' %}selected{% endif %}>Singapore</option>
+                            <option value="44" {% if form_data.get('country') == '44' %}selected{% endif %}>South Africa</option>
+                            <option value="45" {% if form_data.get('country') == '45' %}selected{% endif %}>South Korea</option>
+                            <option value="46" {% if form_data.get('country') == '46' %}selected{% endif %}>Spain</option>
+                            <option value="47" {% if form_data.get('country') == '47' %}selected{% endif %}>Sri Lanka</option>
+                            <option value="48" {% if form_data.get('country') == '48' %}selected{% endif %}>Taiwan</option>
+                            <option value="49" {% if form_data.get('country') == '49' %}selected{% endif %}>Thailand</option>
+                            <option value="50" {% if form_data.get('country') == '50' %}selected{% endif %}>Tunisia</option>
+                            <option value="51" {% if form_data.get('country') == '51' %}selected{% endif %}>Turkey</option>
+                            <option value="52" {% if form_data.get('country') == '52' %}selected{% endif %}>Ukraine</option>
+                            <option value="53" {% if form_data.get('country') == '53' %}selected{% endif %}>United Arab Emirates</option>
+                            <option value="54" {% if form_data.get('country') == '54' %}selected{% endif %}>United Kingdom of Great Britain and Northern Ireland</option>
+                            <option value="55" {% if form_data.get('country') == '55' %}selected{% endif %}>United States of America</option>
+                            <option value="56" {% if form_data.get('country') == '56' %}selected{% endif %}>Viet Nam</option>
+                            <option value="57" {% if form_data.get('country') == '57' %}selected{% endif %}>Zimbabwe</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="highest_deg" class="form-label">Highest Degree</label>
+                        <select class="form-select" id="highest_deg" name="highest_deg" required>
+                            <option value="" disabled {% if not form_data.get('highest_deg') %}selected{% endif %}>Choose a value</option>
+                            <option value="0" {% if form_data.get('highest_deg') == '0' %}selected{% endif %}>Bachelor’s degree</option>
+                            <option value="1" {% if form_data.get('highest_deg') == '1' %}selected{% endif %}>Doctoral degree</option>
+                            <option value="2" {% if form_data.get('highest_deg') == '2' %}selected{% endif %}>I prefer not to answer</option>
+                            <option value="3" {% if form_data.get('highest_deg') == '3' %}selected{% endif %}>Master’s degree</option>
+                            <option value="4" {% if form_data.get('highest_deg') == '4' %}selected{% endif %}>No formal education past high school</option>
+                            <option value="5" {% if form_data.get('highest_deg') == '5' %}selected{% endif %}>Professional doctorate</option>
+                            <option value="6" {% if form_data.get('highest_deg') == '6' %}selected{% endif %}>Some college/university study without earning a bachelor’s degree</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="coding_exp" class="form-label">Coding Experience</label>
+                        <select class="form-select" id="coding_exp" name="coding_exp" required>
+                            <option value="" disabled {% if not form_data.get('coding_exp') %}selected{% endif %}>Choose a value</option>
+                            <option value="0" {% if form_data.get('coding_exp') == '0' %}selected{% endif %}>1-3 years</option>
+                            <option value="1" {% if form_data.get('coding_exp') == '1' %}selected{% endif %}>10-20 years</option>
+                            <option value="2" {% if form_data.get('coding_exp') == '2' %}selected{% endif %}>20+ years</option>
+                            <option value="3" {% if form_data.get('coding_exp') == '3' %}selected{% endif %}>3-5 years</option>
+                            <option value="4" {% if form_data.get('coding_exp') == '4' %}selected{% endif %}>5-10 years</option>
+                            <option value="5" {% if form_data.get('coding_exp') == '5' %}selected{% endif %}>&lt; 1 years</option>
+                            <option value="6" {% if form_data.get('coding_exp') == '6' %}selected{% endif %}>I have never written code</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Current Title</label>
+                        <select class="form-select" id="title" name="title" required>
+                            <option value="" disabled {% if not form_data.get('title') %}selected{% endif %}>Choose a value</option>
+                            <option value="0" {% if form_data.get('title') == '0' %}selected{% endif %}>Data Administrator</option>
+                            <option value="1" {% if form_data.get('title') == '1' %}selected{% endif %}>Data Analyst (Business, Marketing, Financial, Quantitative, etc)</option>
+                            <option value="2" {% if form_data.get('title') == '2' %}selected{% endif %}>Data Architect</option>
+                            <option value="3" {% if form_data.get('title') == '3' %}selected{% endif %}>Data Engineer</option>
+                            <option value="4" {% if form_data.get('title') == '4' %}selected{% endif %}>Data Scientist</option>
+                            <option value="5" {% if form_data.get('title') == '5' %}selected{% endif %}>Developer Advocate</option>
+                            <option value="6" {% if form_data.get('title') == '6' %}selected{% endif %}>Engineer (non-software)</option>
+                            <option value="7" {% if form_data.get('title') == '7' %}selected{% endif %}>Machine Learning/ MLops Engineer</option>
+                            <option value="8" {% if form_data.get('title') == '8' %}selected{% endif %}>Manager (Program, Project, Operations, Executive-level, etc)</option>
+                            <option value="9" {% if form_data.get('title') == '9' %}selected{% endif %}>Other</option>
+                            <option value="10" {% if form_data.get('title') == '10' %}selected{% endif %}>Research Scientist</option>
+                            <option value="11" {% if form_data.get('title') == '11' %}selected{% endif %}>Software Engineer</option>
+                            <option value="12" {% if form_data.get('title') == '12' %}selected{% endif %}>Statistician</option>
+                            <option value="13" {% if form_data.get('title') == '13' %}selected{% endif %}>Teacher / professor</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="company_size" class="form-label">Company Size</label>
+                        <select class="form-select" id="company_size" name="company_size" required>
+                            <option value="" disabled {% if not form_data.get('company_size') %}selected{% endif %}>Choose a value</option>
+                            <option value="0" {% if form_data.get('company_size') == '0' %}selected{% endif %}>0-49 employees</option>
+                            <option value="1" {% if form_data.get('company_size') == '1' %}selected{% endif %}>10,000 or more employees</option>
+                            <option value="2" {% if form_data.get('company_size') == '2' %}selected{% endif %}>1000-9,999 employees</option>
+                            <option value="3" {% if form_data.get('company_size') == '3' %}selected{% endif %}>250-999 employees</option>
+                            <option value="4" {% if form_data.get('company_size') == '4' %}selected{% endif %}>50-249 employees</option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-3">
+                            Predict Salary
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
