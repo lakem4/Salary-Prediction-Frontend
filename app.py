@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-api_url = "http://127.0.0.1:5002/predict"
+api_url = "http://salaryapipredict-degydza8h0h5gzbw.eastus-01.azurewebsites.net/predict"
 
 @app.route("/", methods=["GET"])
 def home():
@@ -52,4 +52,4 @@ def predict():
         )
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001, debug=True)
+    app.run(host="0.0.0.0", port=5001)
