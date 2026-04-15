@@ -22,7 +22,7 @@ def predict():
             "company_size": request.form.get("company_size"),
         }
 
-        response = requests.post(api_url, json=form_data, timeout=50)
+        response = requests.post(api_url, json=form_data, timeout=10)
         response.raise_for_status()
 
         result = response.json()
