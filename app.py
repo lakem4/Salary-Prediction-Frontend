@@ -3,7 +3,7 @@ import requests
 
 app = Flask(__name__)
 
-api_url = "http://salaryapipredict-degydza8h0h5gzbw.eastus-01.azurewebsites.net"
+api_url = "http://salaryapipredict-degydza8h0h5gzbw.eastus-01.azurewebsites.net/predict"
 
 @app.route("/", methods=["GET"])
 def home():
