@@ -1,9 +1,13 @@
+import os
 from flask import Flask, render_template, request
 import requests
 
 app = Flask(__name__)
 
-api_url = "https://salary-prediction-cxgvb3cefchqcyb2.eastus2-01.azurewebsites.net/predict"
+api_url = os.environ.get(
+    "API_URL",
+    "http://127.0.0.1:5002/predict"
+)
 
 @app.route("/", methods=["GET"])
 def home():
@@ -42,14 +46,3 @@ def predict():
             error=f"API connection error: {str(e)}",
             form_data=request.form
         )
-
-    except Exception as e:
-        return render_template(
-            "index.html",
-            predicted_salary=None,
-            error=f"Unexpected error: {str(e)}",
-            form_data=request.form
-        )
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001, debug=True)
